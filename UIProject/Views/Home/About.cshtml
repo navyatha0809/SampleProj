@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+
+<table name="item" id="item" class="display" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Salary</th>
+
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Salary</th>
+
+        </tr>
+    </tfoot>
+
+
+
+</table>
+
+
+<p>Use this area to provide additional information.</p>
+@*<script src="Scripts/jquery-3.4.1.min.js"></script>*@
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+
+
+<script>
+
+    $('#item tfoot th').each(function () {
+        var title = $(this).text();
+        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    });
+    var otable = $('#item').DataTable();
+    otable.columns().every(function () {
+
+        var that = this;
+        $('input', this.footer()).on('keyup change', function () {
+            if (that.search() !== this.value) {
+                that
+                    .search(this.value)
+                    .draw();
+            }
+        });
+    });
+
+
+
+    $(document).ready(function () {
+
+        $.ajax(
+            {
+                "url": WebAPI_URL + "/api/Values/GetDtails",
+                "type": 'GET',
+                "dataType": 'json',
+                "contentType": "application/json; charset=utf-8",
+                success: function (data) {
+
+                    var details = data.d;
+                    for (var i = 0; i < data.length; i++) {
+                        $('#item').append('<tr>' +
+                            '<td>' + data[i].ID + '</td>' +
+                            '<td>' + data[i].Name + '</td>' +
+                            '<td>' + data[i].Gender + '</td>' +
+                            '<td>' + data[i].Salary + '</td>' +
+                            '<tr>');
+                    }
+                    //$("#item").DataTable();
+
+                },
+                error: function () {
+                    alert("hi");
+                }
+            }
+        );
+
+    });
+</script>
+
+   
