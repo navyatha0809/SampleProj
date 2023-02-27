@@ -144,6 +144,17 @@
     <Content Include="Images\image14.jpg" />
     <Content Include="Images\image15.jpg" />
     <Content Include="Images\image17.jpg" />
+    <Content Include="Images\image2.jpg" />
+    <Content Include="Images\image20.jpg" />
+    <Content Include="Images\image22.jpg" />
+    <Content Include="Images\image23.jpg" />
+    <Content Include="Images\image3.jpg" />
+    <Content Include="Images\image4.jpg" />
+    <Content Include="Images\image5.jpg" />
+    <Content Include="Images\image6.jpg" />
+    <Content Include="Images\image7.jpg" />
+    <Content Include="Images\image8.jpg" />
+    <Content Include="Images\image9.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />

@@ -28,6 +28,26 @@ namespace WEPAPIServices
                 throw ex;
             }
         }
+        public DataTable Getimagepathes(int ID)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("select * from dbo.tblImagePaths where ID=@ID", con);
+                cmd.CommandType = CommandType.Text;
+                SqlParameter paramID = new SqlParameter("@ID", SqlDbType.Int);
+                cmd.Parameters.Add(paramID).Value = ID;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
     }
 }
