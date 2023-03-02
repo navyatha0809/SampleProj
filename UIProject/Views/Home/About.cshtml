@@ -3,15 +3,56 @@
 }
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
+<link href="~/Content/modalpopup.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="~/Content/slider.css" rel="stylesheet" />
 
+<style>
+    .center {
+        /*display: flex;
+        justify-content: center;*/
+        align-items: center;
+        /*height: 200px;
+        border: 3px solid green;*/
+    }
 
-<table name="item" id="item" class="display" width="100%" cellspacing="0">
+    .responsive {
+        max-width: 300px;
+        max-height: 300px;
+        /*width: 100%;
+        height: auto;*/
+    }
+
+    .action_dms {
+        background: url('../../Images/action.png') no-repeat;
+        padding: 4px 12px;
+        top: 1px;
+        position: relative;
+        background-size: 24px 24px;
+        cursor: pointer;
+    }
+
+    tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+    .table.datatable_cust tbody .regulatory_dropdown_style .btn {
+        border-bottom: 1px solid #01465f !important;
+    }
+
+    tfoot {
+        display: table-header-group;
+    }
+</style>
+<table name="item" id="item" class="display datatable_cust" width="100%" cellspacing="0">
     <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Gender</th>
             <th>Salary</th>
+            <th>Action</th>
 
         </tr>
     </thead>
@@ -21,6 +62,7 @@
             <th>Name</th>
             <th>Gender</th>
             <th>Salary</th>
+            @*<th>Action</th>*@
 
         </tr>
     </tfoot>
@@ -30,16 +72,67 @@
 </table>
 
 
-<p>Use this area to provide additional information.</p>
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="image-container" id="imageContainerSlides">
+            <div id="namesforImage">
+
+            </div>
+            <div id="Imageslides">
+
+            </div>
+            
+            
+                <button onclick="moveSlides(-1)" id="prev" style="display:none;">Previous</button>
+                <button onclick="moveSlides(1)" id="next" style="display:none;"> Next</button>
+           
+
+        </div>
+        <br>
+
+
+
+
+
+    </div>
+
+</div>
+
+
+
 @*<script src="Scripts/jquery-3.4.1.min.js"></script>*@
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/jquery.dataTables.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" />
 <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
 
 
 <script>
+    //$('#item thead tr').clone(true).appendTo('#item thead');
+    //$('#item thead tr:eq(1) th').each(function (i) {
+    //    if (i < 3) {
+    //        var title = $(this).text();
+    //        $(this).html('<input type="text" placeholder=" Search " />');
+
+    //        $('input', this).on('keyup change', function () {
+    //            if (oTable.column(i).search() !== this.value) {
+    //                oTable
+    //                    .column(i)
+    //                    .search(this.value)
+    //                    .draw();
+    //            }
+    //        });
+           
+    //    }
+    //    else {
+    //        $(this).html('');
+    //    }
+    //});
 
     $('#item tfoot th').each(function () {
         var title = $(this).text();
@@ -61,6 +154,8 @@
 
 
     $(document).ready(function () {
+        $('#item').wrap('<div class="dataTables_scroll" />');
+
 
         $.ajax(
             {
@@ -69,7 +164,7 @@
                 "dataType": 'json',
                 "contentType": "application/json; charset=utf-8",
                 success: function (data) {
-
+                    
                     var details = data.d;
                     for (var i = 0; i < data.length; i++) {
                         $('#item').append('<tr>' +
@@ -77,6 +172,7 @@
                             '<td>' + data[i].Name + '</td>' +
                             '<td>' + data[i].Gender + '</td>' +
                             '<td>' + data[i].Salary + '</td>' +
+                            '<td><a href="#" onclick="ActionImageSlider(' + data[i].ID + ')"><i class="action_dms" title="Action"></i></a>' +
                             '<tr>');
                     }
                     //$("#item").DataTable();
@@ -87,8 +183,115 @@
                 }
             }
         );
+       
 
     });
+    function ActionImageSlider(id) {
+        
+        
+        modal.style.display = "block";
+        debugger;
+        $.ajax(
+            {
+                "url": WebAPI_URL + "/api/Values/GetImagePaths",
+                "type": 'GET',
+                "dataType": 'json',
+                "contentType": "application/json; charset=utf-8",
+                "data": { 'ID': id },
+                success: function (data) {
+                    debugger;
+                    
+                    var detail = data.d;
+                    if (data.length > 0) {
+                        //$("#namesforImage").html(name);
+                        $("#Imageslides").empty();
+                        $("#prev").show();
+                        $("#next").show();
+                        for (var i = 0; i < data.length; i++) {
+                            $("#Imageslides").append(
+                                '<div class="slide"><img src="' + data[i].ImagePath + '" class="responsive" /></div>'
+                            );
+                        }
+                    }
+                    else {
+                        $("#namesforImage").html("There are no Images for this ID");
+                        $("#prev").hide();
+                        $("#next").hide();
+
+
+                    }
+                    var slideIndex = 1;
+                    displaySlide(slideIndex);
+                    
+                    
+                    
+                    
+                },
+                error: function () {
+                    alert("not a valid Image SLide call");
+                }
+
+
+            });
+       
+        
+        
+
+       
+
+
+
+    }
+</script>
+<script>
+    var modal = document.getElementById("myModal");
+   
+    var span = document.getElementsByClassName("close")[0];
+    
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+   
+
+    
+</script>
+<script>
+    var slideIndex = 1;
+    function moveSlides(n) {
+        displaySlide(slideIndex += n);
+    }
+
+    function activeSlide(n) {
+        displaySlide(slideIndex = n);
+    }
+
+
+    function displaySlide(n) {
+        debugger;
+        var i;
+        var totalslides =
+            document.getElementsByClassName("slide");
+
+        //document.getElementsByClassName("footerdot");
+
+        if (n > totalslides.length) {
+            slideIndex = 1;
+        }
+        if (n < 1) {
+            slideIndex = totalslides.length;
+        }
+        for (i = 0; i < totalslides.length; i++) {
+            totalslides[i].style.display = "none";
+        }
+
+        totalslides[slideIndex - 1].style.display = "block";
+
+    }
 </script>
 
-   
+

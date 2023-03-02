@@ -5,11 +5,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
 using System.Web.Http;
 
 using System.Web.Http.Cors;
-
+using WEPAPIServices.BuObjects;
 
 namespace WEPAPIServices.Controllers
 {
@@ -49,6 +48,7 @@ namespace WEPAPIServices.Controllers
         public List<BusinessObjects> GetDtails()
         {
             try
+
             {
                 DataTable t = new DataTable();
                 t = objDAl.GetTableDetails();
@@ -59,9 +59,42 @@ namespace WEPAPIServices.Controllers
                     {
                         BusinessObjects obj = new BusinessObjects();
                         obj.ID = Convert.ToInt32(rdr["Id"]);
-                        obj.Name = rdr["Name"].ToString();
-                        obj.Gender = rdr["Gender"].ToString();
+                        obj.Name = rdr["Name"].ToString().Trim();
+                        obj.Gender = rdr["Gender"].ToString().Trim();
                         obj.Salary = rdr["Salary"].ToString();
+                        list.Add(obj);
+
+                    }
+                }
+
+                return list;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        [Route("GetImagePaths")]
+        [HttpGet]
+        public List<imagepathObjetcs> GetImagePaths(int ID)
+        {
+            try
+            {
+                DataTable t = new DataTable();
+                t = objDAl.Getimagepathes(ID);
+                List<imagepathObjetcs> list = new List<imagepathObjetcs>();
+                if (t.Rows.Count > 0)
+                {
+                    foreach (DataRow rdr in t.Rows)
+                    {
+                        imagepathObjetcs obj = new imagepathObjetcs();
+                        obj.ID = Convert.ToInt32(rdr["ID"]);
+                        obj.ImagePath = rdr["ImagePath"].ToString();
+                       
                         list.Add(obj);
 
                     }
