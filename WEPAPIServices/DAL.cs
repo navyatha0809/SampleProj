@@ -47,6 +47,24 @@ namespace WEPAPIServices
                 throw ex;
             }
         }
+        public DataTable Observation()
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM [AizantIT_Training].[dbo].[corrected_data_with_specCSV]", con);
+                cmd.CommandType = CommandType.Text;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+       
 
 
     }

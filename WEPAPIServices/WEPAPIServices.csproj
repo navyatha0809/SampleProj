@@ -57,6 +57,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http.Cors">
       <HintPath>projectrelatedDLLs\System.Web.Http.Cors.dll</HintPath>
     </Reference>
@@ -163,6 +164,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="BuObjects\BusinessObjects.cs" />
     <Compile Include="BuObjects\imagepathObjetcs.cs" />
+    <Compile Include="BuObjects\ObservationBo.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DAL.cs" />

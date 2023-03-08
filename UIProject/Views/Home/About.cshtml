@@ -37,6 +37,7 @@
         padding: 3px;
         box-sizing: border-box;
     }
+
     .table.datatable_cust tbody .regulatory_dropdown_style .btn {
         border-bottom: 1px solid #01465f !important;
     }
@@ -45,27 +46,68 @@
         display: table-header-group;
     }
 </style>
-<table name="item" id="item" class="display datatable_cust" width="100%" cellspacing="0">
+<table name="item" id="item" class="display datatable_cust" width="120%" cellspacing="0">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Gender</th>
-            <th>Salary</th>
-            <th>Action</th>
+            <th>File_name</th>
+            <th>Observation</th>
+            <th>
+                observation_images
+            </th>
+            <th>
+                fda_address
+            </th>
+            <th>
+                receiver
+            </th>
+            <th>
+                zip_code
+
+            </th>
+            <th>
+                street_address
+
+            </th>
+            <th>
+                inspection_dates
+
+            </th>
+            <th>
+                fei_number
+
+            </th>
+            <th>
+                firm_name
+
+            </th>
+            <th>
+                type
+
+
+            </th>
+            <th>
+                investigator
+
+
+            </th>
+            <th>
+                Action
+
+
+            </th>
 
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Gender</th>
-            <th>Salary</th>
-            @*<th>Action</th>*@
+    @*<tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Salary</th>
+                <th>Action</th>
 
-        </tr>
-    </tfoot>
+            </tr>
+        </tfoot>*@
 
 
 
@@ -84,11 +126,11 @@
             <div id="Imageslides">
 
             </div>
-            
-            
-                <button onclick="moveSlides(-1)" id="prev" style="display:none;">Previous</button>
-                <button onclick="moveSlides(1)" id="next" style="display:none;"> Next</button>
-           
+
+
+            <button onclick="moveSlides(-1)" id="prev" style="display:none;">Previous</button>
+            <button onclick="moveSlides(1)" id="next" style="display:none;"> Next</button>
+
 
         </div>
         <br>
@@ -104,13 +146,22 @@
 
 
 @*<script src="Scripts/jquery-3.4.1.min.js"></script>*@
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+@*<script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/jquery.dataTables.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" />
 <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
 <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" />*@
 
 <script>
     //$('#item thead tr').clone(true).appendTo('#item thead');
@@ -127,68 +178,68 @@
     //                    .draw();
     //            }
     //        });
-           
+
     //    }
     //    else {
     //        $(this).html('');
     //    }
     //});
 
-    $('#item tfoot th').each(function () {
-        var title = $(this).text();
-        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-    });
-    var otable = $('#item').DataTable();
-    otable.columns().every(function () {
+    //$('#item tfoot th').each(function () {
+    //    var title = $(this).text();
+    //    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    //});
+    //var otable = $('#item').DataTable();
+    //otable.columns().every(function () {
 
-        var that = this;
-        $('input', this.footer()).on('keyup change', function () {
-            if (that.search() !== this.value) {
-                that
-                    .search(this.value)
-                    .draw();
-            }
-        });
-    });
-
-
-
-    $(document).ready(function () {
-        $('#item').wrap('<div class="dataTables_scroll" />');
+    //    var that = this;
+    //    $('input', this.footer()).on('keyup change', function () {
+    //        if (that.search() !== this.value) {
+    //            that
+    //                .search(this.value)
+    //                .draw();
+    //        }
+    //    });
+    //});
 
 
-        $.ajax(
-            {
-                "url": WebAPI_URL + "/api/Values/GetDtails",
-                "type": 'GET',
-                "dataType": 'json',
-                "contentType": "application/json; charset=utf-8",
-                success: function (data) {
-                    
-                    var details = data.d;
-                    for (var i = 0; i < data.length; i++) {
-                        $('#item').append('<tr>' +
-                            '<td>' + data[i].ID + '</td>' +
-                            '<td>' + data[i].Name + '</td>' +
-                            '<td>' + data[i].Gender + '</td>' +
-                            '<td>' + data[i].Salary + '</td>' +
-                            '<td><a href="#" onclick="ActionImageSlider(' + data[i].ID + ')"><i class="action_dms" title="Action"></i></a>' +
-                            '<tr>');
-                    }
-                    //$("#item").DataTable();
 
-                },
-                error: function () {
-                    alert("hi");
-                }
-            }
-        );
-       
+    //$(document).ready(function () {
+    //    $('#item').wrap('<div class="dataTables_scroll" />');
 
-    });
+
+    //    $.ajax(
+    //        {
+    //            "url": WebAPI_URL + "/api/Values/GetDtails",
+    //            "type": 'GET',
+    //            "dataType": 'json',
+    //            "contentType": "application/json; charset=utf-8",
+    //            success: function (data) {
+
+    //                var details = data.d;
+    //                for (var i = 0; i < data.length; i++) {
+    //                    $('#item').append('<tr>' +
+    //                        '<td>' + data[i].ID + '</td>' +
+    //                        '<td>' + data[i].Name + '</td>' +
+    //                        '<td>' + data[i].Gender + '</td>' +
+    //                        '<td>' + data[i].Salary + '</td>' +
+    //                        '<td><a href="#" onclick="ActionImageSlider(' + data[i].ID + ')"><i class="action_dms" title="Action"></i></a>' +
+    //                        '<tr>');
+    //                }
+    //                //$("#item").DataTable();
+
+    //            },
+    //            error: function () {
+    //                alert("hi");
+    //            }
+    //        }
+    //    );
+
+
+    //});
     function ActionImageSlider(id) {
-        
-        
+
+
         modal.style.display = "block";
         debugger;
         $.ajax(
@@ -200,7 +251,7 @@
                 "data": { 'ID': id },
                 success: function (data) {
                     debugger;
-                    
+
                     var detail = data.d;
                     if (data.length > 0) {
                         //$("#namesforImage").html(name);
@@ -222,10 +273,10 @@
                     }
                     var slideIndex = 1;
                     displaySlide(slideIndex);
-                    
-                    
-                    
-                    
+
+
+
+
                 },
                 error: function () {
                     alert("not a valid Image SLide call");
@@ -233,11 +284,11 @@
 
 
             });
-       
-        
-        
 
-       
+
+
+
+
 
 
 
@@ -245,9 +296,9 @@
 </script>
 <script>
     var modal = document.getElementById("myModal");
-   
+
     var span = document.getElementsByClassName("close")[0];
-    
+
     span.onclick = function () {
         modal.style.display = "none";
     }
@@ -256,9 +307,9 @@
             modal.style.display = "none";
         }
     }
-   
 
-    
+
+
 </script>
 <script>
     var slideIndex = 1;
@@ -291,6 +342,89 @@
 
         totalslides[slideIndex - 1].style.display = "block";
 
+    }
+</script>
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" />*@
+<script>
+    $(document).ready(function () {
+        getlist();
+    });
+
+    var tblist;
+    function getlist() {
+        
+        tblist = $('#item').DataTable({
+            columns:
+                [
+                    { 'data': 'Filename' },//0
+                    { 'data': 'observation' },
+                    { 'data': 'observation_images' },
+                    { 'data': 'fda_address' },
+                    { 'data': 'receiver' },
+                    { 'data': 'zip_code' },
+                    { 'data': 'street_address' },
+                    { 'data': 'inspection_dates' },
+                    { 'data': 'fei_number' },
+                    { 'data': 'firm_name' },
+                    { 'data': 'type' },
+                    { 'data': 'investigator' },
+                    //{ 'data': 'UniqueID' }
+                    {
+                        "mData": null,
+                        "bSortable": false,
+                        "mRender": function (o) { return '<a class="action_dms" title="Action"  href="#" onclick="ActionImageSlider(' + o.UniqueID + ');"></a>'; }
+                    }
+                    //{ 'data': 'confirmpassword' }
+
+
+                ],
+            //"lengthMenu": [[5], [5]],
+            "pageLength": 10,
+            "filter": true,
+            "serverSide": false,
+            // "searching":true,
+            "destroy": true,
+            "aoColumnDefs": [{ 'Sortable': true, 'targets': [0, 1, 2, 3] }, { 'searchable': true, 'targets': [0, 1, 2, 3, 4, 5] }, { 'Sortable': true, 'targets': [1], "visible": false, },],
+            //, { "bSortable": false, aTargets: [0, 1, 2, 3, 4, 5, 6] }  "targets": [0], "visible": false },
+            "sAjaxSource": WebAPI_URL + "/api/Values/Getobservation",//'/EmployeeService.asmx/Getemp',
+            "fnServerData": function (sSource, aoData, fnCallback) {//, aaData, fnCallback
+                $.ajax({
+                    "type": "GET",
+                    "url": sSource,
+                    "dataType": 'json',
+                    "contentType": "application/json; charset=utf-8",
+                    "data": aoData,
+                    "success": function (result) {
+                        debugger;
+                        console.log(result.d);
+                        var json = jQuery.parseJSON(result);
+
+                        // fnCallback(result,json.length);
+                        //  var odata=result.d;
+                        fnCallback({
+                            "data": json.aaData,
+                            "recordsTotal": json.aaData.length,
+                            "recordsFiltered": json.aaData.length
+                        });
+
+                    },
+                    error: function (error) {
+                        debugger;
+                        console.log(error);
+                    }
+
+                });
+            }
+        });
     }
 </script>
 

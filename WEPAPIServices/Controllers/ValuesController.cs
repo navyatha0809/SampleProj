@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http;
 
 using System.Web.Http.Cors;
+using System.Web.Script.Serialization;
 using WEPAPIServices.BuObjects;
 
 namespace WEPAPIServices.Controllers
@@ -110,6 +111,48 @@ namespace WEPAPIServices.Controllers
                 throw ex;
             }
 
+        }
+
+        [Route("Getobservation")]
+        [HttpGet]
+        public string Getobservation() //List<employee>
+        {
+
+           
+            // String cs = ConfigurationManager.ConnectionStrings["test1"].ConnectionString;
+            List<ObservationBo> list = new List<ObservationBo>();
+
+            DataTable t = objDAl.Observation();
+            if (t.Rows.Count > 0)
+            {
+                foreach (DataRow rdr in t.Rows)
+                {
+                    ObservationBo obj = new ObservationBo();
+                    obj.UniqueID = Convert.ToInt32(rdr["UniqueID"]);
+                    obj.Filename = rdr["file_name"].ToString().Trim();
+                    obj.observation = rdr["observation"].ToString().Trim();
+                    obj.observation_images = rdr["observation_images"].ToString();
+                    obj.fda_address = rdr["fda_address"].ToString();
+                    obj.receiver = rdr["receiver"].ToString();
+                    obj.zip_code = rdr["zip_code"].ToString();
+                    obj.street_address = rdr["street_address"].ToString();
+                    obj.inspection_dates = rdr["inspection_dates"].ToString();
+                    obj.fei_number = rdr["fei_number"].ToString();
+                    obj.firm_name = rdr["firm_name"].ToString();
+                    obj.type = rdr["type"].ToString();
+                    obj.investigator = rdr["investigator"].ToString();
+                    list.Add(obj);
+
+                }
+            }
+
+            var result = new
+            {
+                aaData = list
+            };
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            js.MaxJsonLength = Int32.MaxValue;
+            return js.Serialize(result);
         }
     }
 }
